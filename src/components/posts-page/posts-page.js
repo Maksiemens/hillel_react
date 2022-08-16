@@ -1,6 +1,6 @@
 import React from 'react';
 import './posts-page.scss';
-import PostForm from '../post-form';
+import PostCreateForm from '../post-create-form';
 import PostList from '../post-list';
 import JsonplaceholderService from '../../services/jsonplaceholder-service';
 
@@ -29,6 +29,18 @@ export default class PostsPage extends React.Component {
     });
   };
 
+  updatePost = (post) => {
+    this.setState({ isLoading: true });
+    this.jsonplaceholderService.updatePost(post).then((newPost) => {
+      this.setState((state) => ({
+        isLoading: false,
+        posts: state.posts.map((post) =>
+          post.id === newPost.id ? { ...post, ...newPost } : post,
+        ),
+      }));
+    });
+  };
+
   removePost = (post) => {
     this.setState({ isLoading: true });
     this.jsonplaceholderService.removePost(post).then(() => {
@@ -44,7 +56,7 @@ export default class PostsPage extends React.Component {
       <div className="posts-page">
         <div className="container">
           <header className="posts-page__header mb-5">
-            <PostForm
+            <PostCreateForm
               isLoading={this.state.isLoading}
               onCreatePostItem={this.createPost}
             />
@@ -53,6 +65,7 @@ export default class PostsPage extends React.Component {
             <PostList
               isLoading={this.state.isLoading}
               posts={this.state.posts}
+              onUpdatePostItem={this.updatePost}
               onRemovePostItem={this.removePost}
             />
           </div>

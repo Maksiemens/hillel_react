@@ -18,6 +18,15 @@ export default class JsonplaceholderService {
     return await response.json();
   }
 
+  async updatePost(post) {
+    const response = await fetch(`${this._apiBase}/posts/${post.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(post),
+      headers: { 'Content-type': 'application/json; charset=UTF-8' },
+    });
+    return await response.json();
+  }
+
   async removePost(post) {
     const response = await fetch(`${this._apiBase}/posts/${post.id}`, {
       method: 'DELETE',
