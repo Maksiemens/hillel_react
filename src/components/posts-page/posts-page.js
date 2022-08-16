@@ -15,41 +15,57 @@ export default class PostsPage extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    this.jsonplaceholderService.loadAllPosts().then((posts) => {
-      this.setState({ isLoading: false, posts });
-    });
+    this.jsonplaceholderService
+      .loadAllPosts()
+      .then((posts) => {
+        this.setState({ isLoading: false, posts });
+      })
+      .catch(this.onError);
   }
+
+  onError = (error) => {
+    this.setState({ isLoading: false, error });
+  };
 
   createPost = (post) => {
     this.setState({ isLoading: true });
-    this.jsonplaceholderService.createPost(post).then((newPost) => {
-      this.setState((state) => ({
-        isLoading: false,
-        posts: [newPost, ...state.posts],
-      }));
-    });
+    this.jsonplaceholderService
+      .createPost(post)
+      .then((newPost) => {
+        this.setState((state) => ({
+          isLoading: false,
+          posts: [newPost, ...state.posts],
+        }));
+      })
+      .catch(this.onError);
   };
 
   updatePost = (post) => {
     this.setState({ isLoading: true });
-    this.jsonplaceholderService.updatePost(post).then((newPost) => {
-      this.setState((state) => ({
-        isLoading: false,
-        posts: state.posts.map((post) =>
-          post.id === newPost.id ? { ...post, ...newPost } : post,
-        ),
-      }));
-    });
+    this.jsonplaceholderService
+      .updatePost(post)
+      .then((newPost) => {
+        this.setState((state) => ({
+          isLoading: false,
+          posts: state.posts.map((post) =>
+            post.id === newPost.id ? { ...post, ...newPost } : post,
+          ),
+        }));
+      })
+      .catch(this.onError);
   };
 
   removePost = (post) => {
     this.setState({ isLoading: true });
-    this.jsonplaceholderService.removePost(post).then(() => {
-      this.setState((state) => ({
-        isLoading: false,
-        posts: state.posts.filter((item) => item.id !== post.id),
-      }));
-    });
+    this.jsonplaceholderService
+      .removePost(post)
+      .then(() => {
+        this.setState((state) => ({
+          isLoading: false,
+          posts: state.posts.filter((item) => item.id !== post.id),
+        }));
+      })
+      .catch(this.onError);
   };
 
   render() {
