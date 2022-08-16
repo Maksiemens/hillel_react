@@ -9,6 +9,7 @@ export default class PostsPage extends React.Component {
 
   state = {
     isLoading: false,
+    error: null,
     posts: [],
   };
 
